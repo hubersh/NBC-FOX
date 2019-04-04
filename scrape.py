@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 
+"""@author Hunter Hubers
+   @Created 2019-03-24
+"""
+
 import re
 import requests
 import sys
@@ -30,7 +34,7 @@ class WebScrape:
 
         :return: None
         """
-        self.data.append(re.findall(r'(?<=>)([^{\n]*?)\w?(?=<)', str(self.soup)))
+        self.data = [re.findall(r'(?<=>)([^{\n]*?)\w?(?=<)', str(self.soup))]
 
     def clean_content(self):
         """Clean the text from a web page
