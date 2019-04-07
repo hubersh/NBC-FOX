@@ -34,7 +34,7 @@ if __name__ == "__main__":
     left_data = load_data("./training_data/left.txt")
     right_data = load_data("./training_data/right.txt")
 
-    vect = TfidfVectorizer(stop_words="english", max_df=0.8, min_df=10)
+    vect = TfidfVectorizer(stop_words="english")  # , max_df=0.8, min_df=10)
 
     vData = vect.fit_transform(current_page)
     vKeep = vect.transform(left_data)
@@ -59,5 +59,7 @@ if __name__ == "__main__":
 
     for row, vRow in zip(current_page[:30], vData[:30]):
         print(row)
-        print("Left: {}%, Right: {}%".format(int(100 * lpm.predict_proba(vRow)[0][1]), int(100 * lpm.predict_proba(vRow)[0][0])))
-        print("------------")
+        print(vRow)
+        print(lpm.predict_proba(vRow))
+        # print("Left: {}%, Right: {}%".format(int(100 * lpm.predict_proba(vRow)[0][1]), int(100 * lpm.predict_proba(vRow)[0][0])))
+        # print("------------")
