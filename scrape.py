@@ -53,7 +53,7 @@ class WebScrape:
         return output
 
     @staticmethod
-    def export_data(filename, data):
+    def export_list_data(filename, data):
         """Export the text data from a web page to a file
 
         :param filename: Name of the file to write to
@@ -64,16 +64,35 @@ class WebScrape:
             F.write(str(data)+"\n")
 
 
+def external_call(url):
+    """Create a temporary file for use in classifier.py
+
+    :param url: web page to scrape
+    :return: None
+    """
+
+    live = WebScrape()
+    live.get_page(url)
+    live.set_data()
+
+    output = live.clean_content()
+    with open("temp.txt", "w+", encoding="utf-8") as temp:
+        for string in output:
+            temp.write(string+"\n")
+    print("Data Pulled")
+
+
 if __name__ == '__main__':
 
+    external_call('https://www.foxnews.com/politics/obama-warns-democrats-against-creating-circular-firing-squad')
     # Initialize the class
-    S = WebScrape()
-
-    # Pull the page data
-    S.get_page(sys.argv[1])
-    S.set_data()
+    # S = WebScrape()
+    #
+    # # Pull the page data
+    # S.get_page(sys.argv[1])
+    # S.set_data()
 
     # Clean and export the data
-    text_data = S.clean_content()
-    S.export_data('output3.txt', text_data)
+    # text_data = S.clean_content()
+    # S.export_list_data('output3.txt', text_data)
 
