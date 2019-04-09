@@ -3,23 +3,30 @@ import os
 import pandas as pd
 import pyprind
 import pickle
+import sys
+
+
+import scrape
 
 
 from SentimentAnalysis import SentimentAnalysis
 
-import scrape
 
 class PredictBias:
-    def __init__(self, url, modelfile="pickled_model.sav"):
+    def __init__(self, url, modelfile="pickled_model.pkl"):
         self.url = url
-        self.model = pickle.load(open(modelfile, 'rb'))
+        with open(modelfile, "rb") as f:
+            self.model = pickle.load(f)
+       # self.model = pickle.load(open(modelfile, 'rb'))
 
     def predict_url(self):
         X = scrape.external_call(self.url)
         X = [X]
 
         print(self.model.predict(X))
-        print(self.model.decision_function(X))
+        print("Left: {}%. Right: {}%".format(int(100 * self.model.predict_proba(X)[0][1]),
+                                             int(100 * self.model.predict_proba(X)[0][1])))
 
-pb = PredictBias("https://www.foxnews.com/us/arrests-announced-in-murder-for-hire-plot-that-killed-the-wrong-person")
+
+pb = PredictBias(sys.argv[1])
 pb.predict_url()
