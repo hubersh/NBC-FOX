@@ -9,6 +9,7 @@ Bryce Hutton, Dan Schroeder, Hunter Hubers
 
 - https://mediabiasfactcheck.com/
 - https://news.mit.edu/2018/mit-csail-machine-learning-system-detects-fake-news-from-source-1004
+- https://www.julienphalip.com/blog/identifying-bias-in-the-media-with-sentiment/
 
 
 ## Concepts
