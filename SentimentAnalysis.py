@@ -38,7 +38,7 @@ df.columns = ['Article', 'Directional-Bias']
 
 # Shuffle the data
 np.random.seed(0)
-df = df.reindex(np.random.permutation(self.df.index))
+df = df.reindex(np.random.permutation(df.index))
 df.to_csv('./shuffled_data.csv', index=False)
 
 
