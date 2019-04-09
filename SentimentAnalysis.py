@@ -19,12 +19,13 @@ from sklearn.model_selection import GridSearchCV
 
 import scrape
 
+
 class SentimentAnalysis:
     def __init__(self):
         self.porter = PorterStemmer()
         self.df = None
 
-    def load_in_data(self, url):
+    def load_in_data(self):
 
         # Read the data
         basepath = "./training_data"
@@ -43,20 +44,20 @@ class SentimentAnalysis:
         # Change names of columns
         self.df.columns = ['Article', 'Directional-Bias']
 
-
         # Shuffle the data
         np.random.seed(0)
         self.df = self.df.reindex(np.random.permutation(self.df.index))
         # Used to save and reload shuffled data
         self.df.to_csv('./shuffled_data.csv',  encoding= "ISO-8859-1", index=False)
 
-    def read_in_data(self, url):
+    def read_in_data(self):
 
         # Read shuffled data
         self.df = pd.read_csv('./shuffled_data.csv')
-        #print(self. df.head(10))
+        # print(self. df.head(10))
 
-    def tokenizer(self, text):
+    @staticmethod
+    def tokenizer(text):
         return text.split()
 
     def tokenizer_porter(self, text):
@@ -106,6 +107,9 @@ class SentimentAnalysis:
             print('Test Accuracy: %.3f' % clf.score(X_test, y_test))
             with open('pickled_model_clf.sav', 'wb+') as f:
                 pickle.dump(gs_lr_tfidf, f)
-sa = SentimentAnalysis()
-sa.read_in_data("./training_data")
-sa.train_data()
+
+
+if __name__ == '__main__':
+    sa = SentimentAnalysis()
+    sa.read_in_data("./training_data")
+    sa.train_data()
