@@ -4,22 +4,34 @@ import pandas as pd
 import pyprind
 import pickle
 
+import warnings
+warnings.filterwarnings("ignore")
+
+import scrape
+
 
 from SentimentAnalysis import SentimentAnalysis
 
-import scrape
 
 class PredictBias:
     def __init__(self, url, modelfile="pickled_model.sav"):
         self.url = url
-        self.model = pickle.load(open(modelfile, 'rb'))
+        with open(modelfile, "rb") as f:
+            self.model = pickle.load(f)
+       # self.model = pickle.load(open(modelfile, 'rb'))
 
     def predict_url(self):
         X = scrape.external_call(self.url)
         X = [X]
+    
+        value_dict = {0: 'Right', 1: "Left"}
+        print("We predict that this article is",value_dict[int(self.model.predict(X)[0])],"leaning.")
+        print("Left: {}%. Right: {}%".format(int(100 * self.model.predict_proba(X)[0][1]),
+                                             int(100 * self.model.predict_proba(X)[0][0])))
 
-        print(self.model.predict(X))
-        print(self.model.predict_proba(X))
+if __name__ == "__main__":
 
-pb = PredictBias("https://www.cnn.com/2019/04/09/politics/donald-trump-mcgahn-tillerson-nielsen/index.html")
-pb.predict_url()
+    user_input = input("Please enter a url: ")
+    pb = PredictBias(user_input)
+    pb.predict_url()
+

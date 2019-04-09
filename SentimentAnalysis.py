@@ -54,7 +54,7 @@ class SentimentAnalysis:
 
         # Read shuffled data
         self.df = pd.read_csv('./shuffled_data.csv')
-        print(self. df.head(10))
+        #print(self. df.head(10))
 
     def tokenizer(self, text):
         return text.split()
@@ -63,13 +63,14 @@ class SentimentAnalysis:
         return [self.porter.stem(word) for word in text.split()]
 
     def train_data(self):
+        # bug: Pickle only works if you put __name__ == '__main__' here
         if __name__ == '__main__':
             # Create a training and test set.
             # This is a simplified approach.
-            X_train = self.df.loc[:559, 'Article'].values
-            y_train = self.df.loc[:559, 'Directional-Bias'].values
-            X_test = self.df.loc[559:, 'Article'].values
-            y_test = self.df.loc[559:, 'Directional-Bias'].values
+            X_train = self.df.loc[:350, 'Article'].values
+            y_train = self.df.loc[:350, 'Directional-Bias'].values
+            X_test = self.df.loc[350:, 'Article'].values
+            y_test = self.df.loc[350:, 'Directional-Bias'].values
 
             tfidf = TfidfVectorizer(strip_accents=None, lowercase=False, preprocessor=None)
 
@@ -94,14 +95,17 @@ class SentimentAnalysis:
 
             # This fitting process takes a long time!
             gs_lr_tfidf.fit(X_train, y_train)
-          #  pickle.dump(gs_lr_tfidf, open('pickled_model_gs.sav', 'wb'))
+            with open('pickled_model_gs.pkl', 'wb+') as f:
+                pickle.dump(gs_lr_tfidf, f)
+            pickle.dump(gs_lr_tfidf, open('pickled_model_gs.sav', 'wb'))
 
             # print('Best parameter set: %s ' % gs_lr_tfidf.best_params_)
             print('CV Accuracy: %.3f' % gs_lr_tfidf.best_score_)
 
             clf = gs_lr_tfidf.best_estimator_
             print('Test Accuracy: %.3f' % clf.score(X_test, y_test))
-            pickle.dump(gs_lr_tfidf, open('pickled_model_clf.sav', 'wb'))
+            with open('pickled_model_clf.sav', 'wb+') as f:
+                pickle.dump(gs_lr_tfidf, f)
 sa = SentimentAnalysis()
 sa.read_in_data("./training_data")
 sa.train_data()
