@@ -15,9 +15,11 @@ def mass_build(file, url_list, value):
     :param value: label either 1 or 0
     :return: None
     """
+    size = len(url_list)
     with open(file, "w+", encoding="utf-8") as OUT:
         for idx, url in enumerate(url_list):
-            OUT.write(scrape.external_call(url)+","+str(value)+"\n")
+            print(idx, " of ", size)
+            OUT.write(scrape.external_call(url).replace(",","")+","+str(value)+"\n")
 
     print('Done')
 
@@ -25,13 +27,13 @@ def mass_build(file, url_list, value):
 if __name__ == '__main__':
 
     urls = []
-    filename = 'LeftDocs.txt'
-    label = 1
+    filename = 'RightDocs.txt'
+    label = 0
 
     with open(filename, 'r', encoding='utf-8') as D:
         for line in D:
             urls.append(line.strip())
 
-    mass_build("left.csv", urls, label)
+    mass_build("right.csv", urls, label)
 
 
