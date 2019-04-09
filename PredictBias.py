@@ -19,7 +19,7 @@ class PredictBias:
         X = [X]
 
         print(self.model.predict(X))
-        print(self.model.decision_function(X))
+        print(self.model.predict_proba(X))
 
-pb = PredictBias("https://www.foxnews.com/us/arrests-announced-in-murder-for-hire-plot-that-killed-the-wrong-person")
+pb = PredictBias("https://www.cnn.com/2019/04/09/politics/donald-trump-mcgahn-tillerson-nielsen/index.html")
 pb.predict_url()
