@@ -100,14 +100,8 @@ class SentimentAnalysis:
             print('CV Accuracy: %.3f' % gs_lr_tfidf.best_score_)
 
             clf = gs_lr_tfidf.best_estimator_
-            #print('Test Accuracy: %.3f' % clf.score(X_test, y_test))
+            print('Test Accuracy: %.3f' % clf.score(X_test, y_test))
             pickle.dump(gs_lr_tfidf, open('pickled_model_clf.sav', 'wb'))
-
-            # TODO Read https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
-            # TODO Call scrape.external_call() this return will be the article text string that needs to be predicted
-            X = scrape.external_call("https://www.reuters.com/article/us-usa-immigration-asylum/u-s-judge-halts-trump-policy-of-returning-asylum-seekers-to-mexico-idUSKCN1RK2E6")
-            #TODO create temporary file to send to predict, as it needs a file not a string. Or work with streams for it.
-           # gs_lr_tfidf.predict(tempfile)  # TODO Figure out how to pass new data to the prediction function
 sa = SentimentAnalysis()
 sa.read_in_data("./training_data")
 sa.train_data()
