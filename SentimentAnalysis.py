@@ -22,15 +22,15 @@ import scrape
 # Read the data
 basepath = "./training_data"
 labels = {'left': 1, 'right': 0}
-pbar = pyprind.ProgBar(50000)
+pbar = pyprind.ProgBar(500)
 df = pd.DataFrame()
 for s in ('test', 'train'):
     for l in ('left', 'right'):
         path = os.path.join(basepath, s, l)
         for file in os.listdir(path):
-            with open(os.path.join(path, file), 'r') as infile:
+            with open(os.path.join(path, file), 'r', encoding="ISO-8859-1") as infile:
                 txt = infile.read()
-            df = df.append([[txt, labels[1]]], ignore_index=True)
+            df = df.append([[txt, labels[l]]], ignore_index=True)
             pbar.update()
 # Change names of columns
 df.columns = ['Article', 'Directional-Bias']
@@ -39,7 +39,7 @@ df.columns = ['Article', 'Directional-Bias']
 # Shuffle the data
 np.random.seed(0)
 df = df.reindex(np.random.permutation(df.index))
-df.to_csv('./shuffled_data.csv', index=False)
+df.to_csv('./shuffled_data.csv',  encoding= "ISO-8859-1", index=False)
 
 
 # Read shuffled data
