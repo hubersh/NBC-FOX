@@ -6,7 +6,6 @@
 
 import re
 import requests
-import sys
 
 from bs4 import BeautifulSoup
 
@@ -22,8 +21,8 @@ class WebScrape:
     def get_page(self, page):
         """Set the page and soup variables to a URL's contents
 
-        :param page: A website URL
-        :return: None
+           :param page: A website URL
+           :return: None
         """
         self.page = requests.get(page)
         # Create a BeautifulSoup object
@@ -32,15 +31,12 @@ class WebScrape:
     def set_data(self):
         """Pull all of the text from a web page and store it in a class variable
 
-        :return: None
+           :return: None
         """
         self.data = [re.findall(r'(?<=>)([^{\n]*?)\w?(?=<)', str(self.soup))]
 
     def clean_content(self):
-        """Clean the text from a web page
-
-        :return: Cleaned web page text data
-        """
+        """Clean the text from a web page"""
         output = []
         for item in self.data:
             for content in item:
@@ -50,30 +46,47 @@ class WebScrape:
                     continue
                 else:
                     output.append(content)
-        return output
+        self.data = output
+
+    def format_data(self):
+        """Format the data to an individual string.
+
+           :return: String of all text data.
+        """
+        string_output = ""
+        for string in self.data:
+            string_output += string.strip()
+        return string_output
 
     @staticmethod
-    def export_data(filename, data):
+    def export_list_data(filename, data):
         """Export the text data from a web page to a file
 
-        :param filename: Name of the file to write to
-        :param data: Data to be written to the file
-        :return: None
+           :param filename: Name of the file to write to
+           :param data: Data to be written to the file
+           :return: None
         """
-        with open(filename, 'w+') as F:
-            F.write(str(data)+"\n")
+        with open(filename, 'w+', encoding="utf-8") as F:
+            for string in data:
+                F.write(string.strip()+" ")
+            F.write("\n")
+
+
+def external_call(url):
+    """Create a temporary file for use in classifier.py
+
+    :param url: The web page to scrape
+    :return: Formatted string
+    """
+    live = WebScrape()
+    live.get_page(url)
+    live.set_data()
+    live.clean_content()
+
+    return live.format_data()
 
 
 if __name__ == '__main__':
 
-    # Initialize the class
-    S = WebScrape()
-
-    # Pull the page data
-    S.get_page(sys.argv[1])
-    S.set_data()
-
-    # Clean and export the data
-    text_data = S.clean_content()
-    S.export_data('output3.txt', text_data)
+    external_call('https://www.foxnews.com/politics/obama-warns-democrats-against-creating-circular-firing-squad')
 
