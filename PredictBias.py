@@ -3,16 +3,9 @@ import os
 import pandas as pd
 import pyprind
 import pickle
-import SentimentAnalysis
 
 
-from SentimentAnalysis import tokenizer
-from nltk.corpus import stopwords
-from nltk.stem.porter import PorterStemmer
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.model_selection import GridSearchCV
+from SentimentAnalysis import SentimentAnalysis
 
 import scrape
 
@@ -23,9 +16,10 @@ class PredictBias:
 
     def predict_url(self):
         X = scrape.external_call(self.url)
+        X = [X]
 
-        # TODO create temporary file to send to predict, as it needs a file not a string. Or work with streams for it.
-        print(self.model.gs_lr_tfidf.predict())  # TODO Figure out how to pass new data to the prediction function
+        print(self.model.predict(X))
+        print(self.model.decision_function(X))
 
-pb = PredictBias("https://www.reuters.com/article/us-usa-immigration-asylum/u-s-judge-halts-trump-policy-of-returning-asylum-seekers-to-mexico-idUSKCN1RK2E6")
+pb = PredictBias("https://www.foxnews.com/us/arrests-announced-in-murder-for-hire-plot-that-killed-the-wrong-person")
 pb.predict_url()
