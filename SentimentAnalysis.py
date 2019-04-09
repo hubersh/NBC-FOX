@@ -16,6 +16,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import GridSearchCV
 
+import scrape
+
 
 # Read the data
 basepath = "./training_data"
@@ -91,3 +93,8 @@ print('CV Accuracy: %.3f' % gs_lr_tfidf.best_score_)
 
 clf = gs_lr_tfidf.best_estimator_
 print('Test Accuracy: %.3f' % clf.score(X_test, y_test))
+
+# TODO Read https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+# TODO Call scrape.external_call() this return will be the article text string that needs to be predicted
+X = None  # TODO X should be the data from the new url
+gs_lr_tfidf.predict(X)  # TODO Figure out how to pass new data to the prediction function
